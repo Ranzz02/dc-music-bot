@@ -8,7 +8,8 @@ import (
 )
 
 type EnvConfig struct {
-	Token string `env:"DISCORD_TOKEN,required"`
+	Token  string `env:"DISCORD_TOKEN,required"`
+	Prefix string `env:"PREFIX" default:"!"`
 }
 
 func NewEnvConfig() *EnvConfig {

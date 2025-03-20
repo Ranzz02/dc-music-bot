@@ -4,12 +4,9 @@ services:
       dockerfile: Dockerfile
       context: ./
     container_name: "music_bot"
-    working_dir: /app
     volumes:
       - ./:/app
     ports:
     - 8080:8080
     env_file:
       - .env
-    command: ["air", "-c", ".air.toml"]
-    restart: unless-stopped

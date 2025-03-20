@@ -19,6 +19,7 @@ func Start() {
 
 	// Register interaction handlers
 	bot.AddHandler(handlers.CommandHandler)
+	bot.AddHandler(handlers.HelpButtonHandler)
 
 	bot.Identify.Intents = discordgo.IntentsAllWithoutPrivileged
 

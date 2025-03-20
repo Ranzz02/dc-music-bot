@@ -1,36 +1,22 @@
-# Choose Ubuntu as the base image
-FROM golang:alpine
+# Use Node.js official image
+FROM node:18-bullseye
+
+# Install FFmpeg
+RUN apt-get update && apt-get install -y ffmpeg && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
 WORKDIR /app
 
-# Install necessary packages
-RUN apk update && \
-    apk add -y --no-cache \
-    nodejs \
-    npm \
-    ffmpeg \
-    python3 \
-    yt-dlp \
-    build-base
-
-# Create and move into the encoder directory
-WORKDIR /app/encode
-
-# Copy package.json and package-lock.json first (for caching dependencies)
-COPY encoder/package*.json ./
-
-# Install NPM dependencies inside /encode
+# Copy package.json and install dependencies
+COPY package.json package-lock.json ./
 RUN npm install
 
-# Go back to /app for Go application
-WORKDIR /app
-
-# Copy everything else **after** installing dependencies
+# Copy bot files
 COPY . .
 
-# Install the air package (for live-reloading Go projects)
-RUN go install github.com/air-verse/air@latest
+RUN npm run build
 
-# Set the entry point to activate the virtual environment and run air
-ENTRYPOINT ["air"]
+# Compile TypeScript to JavaScript
+
+# Start the bot
+CMD ["node", "dist/index.js"]
